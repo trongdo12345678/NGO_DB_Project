@@ -2,6 +2,7 @@
 using NGO_DB_Project.Models;
 using NGO_DB_Project.Service;
 using System.Diagnostics;
+using PagedList;
 
 namespace NGO_DB_Project.Areas.Admin.Controllers;
 [Area("Admin")]
@@ -13,11 +14,19 @@ public class ProjectTypeController : Controller
         _projectypeService = projectypeService;
     }
     //[Route("~/")] // uu tieen chay truowc ham nay
-    public IActionResult Index()
+    public IActionResult Index(int? page,int? pagesize)
     {
-   
-        ViewBag.ProT = _projectypeService.GetProtype();
-        return View();
+         if(page == null)
+        {
+            page = 1;
+        }
+         if(pagesize == null)
+        {
+            pagesize = 10;
+        }
+         var ProPt = _projectypeService.GetProtype();
+        //ViewBag.ProT = _projectypeService.GetProtype();
+        return View(ProPt.ToPagedList((int)page, (int)pagesize));
     }
     public IActionResult AddPT()
     {
@@ -28,12 +37,27 @@ public class ProjectTypeController : Controller
     {
           //Debug.WriteLine(pt);  
         _projectypeService.AddPTy(pt);
-        return View();
+        return RedirectToAction("Index");
     }
-    [HttpPost]
+    
     public IActionResult DeletePT(int id)
     {
+        //Debug.WriteLine(id);
 		_projectypeService.DeletePTy(id);
 		return RedirectToAction("Index");
 	}
+    public IActionResult UpdatePT(int Id)
+    {
+		var proPT = _projectypeService.GetPT(Id);
+		return View("UpdatePT", proPT);
+    }
+    [HttpPost]
+    public IActionResult Update(ProjectType pt)
+    {
+        //Debug.WriteLine(pt);  
+
+        _projectypeService.UpdatePTy(pt);
+        return RedirectToAction("Index");
+    }
+	
 }

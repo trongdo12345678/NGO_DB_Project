@@ -41,7 +41,7 @@ public class ProjectTypeServiceImpl : ProjectypeService
             return false;
         }
     }
-    public int DeletePTy(int id)
+    public bool DeletePTy(int id)
     {
         try
         {
@@ -49,16 +49,51 @@ public class ProjectTypeServiceImpl : ProjectypeService
             if (d != null)
 			{
 				_context.ProjectTypes.Remove(d);
-				_context.SaveChanges();
-				return 1;
+				
+				return _context.SaveChanges()  > 0;
 			}
-			return 2;
-		}catch (Exception ex)
+			return false;
+		}catch (Exception)
         {
-            Debug.WriteLine(ex.Message);
-            return 0;
+            
+            return false;
         }
     }
-    
+	public ProjectType GetPT(int id)
+	{
+		try
+		{
+			var projectType = _context.ProjectTypes
+
+				.FirstOrDefault(p => p.Id == id);
+			if (projectType != null) return projectType;
+			return new ProjectType();
+		}
+		catch (Exception)
+		{
+			return new ProjectType();
+		}
+	}
+	public bool UpdatePTy(ProjectType pt)
+    {
+        try
+        {
+
+            var e = _context.ProjectTypes.FirstOrDefault(e => e.Id == pt.Id);
+
+            if (e != null)
+            {
+
+                e.TypeName = pt.TypeName;
+                return _context.SaveChanges() > 0;
+            }
+            return false;
+
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
 
 }

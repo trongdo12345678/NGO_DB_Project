@@ -1,8 +1,10 @@
 ﻿
+@using PagedList.Mvc;
+@using PagedList;
+@model IPagedList<NGO_DB_Project.Models.ProjectType>
+
 @{
     Layout = "_LayoutAdmin";
-    List<NGO_DB_Project.Models.ProjectType> Prot = new List<NGO_DB_Project.Models.ProjectType>();
-    if (ViewBag.ProT != null) { Prot = ViewBag.ProT; }
 }
 
 
@@ -60,24 +62,38 @@
 
                     </tr>
                 </thead>
-                <tbody>
+                @if(Model != null && Model.Any())
+                {
+                    var i = 1;
+                    <tbody>
 
-                    @foreach (NGO_DB_Project.Models.ProjectType item in Prot)
-                    {
-                        <tr id="trow_@item.Id">
-                            <td class="text-center">@item.Id</td>
-                            <td class="text-center">@item.TypeName</td>
-                            <td class="text-center">
-                                <a href="#" class="btn btm-sm btn-primary">Sửa</a>
-                                <a asp-action="DeletePT" asp-route-id="@item.Id" class="btn btm-sm btn-danger btnDelete">Xóa</a>
-                            </td>
-                        </tr>
-                    }
+                        @foreach (var item in Model)
+                        {
+                            <tr id="trow_@item.Id">
+                                <td class="text-center">@item.Id</td>
+                                <td class="text-center">@item.TypeName</td>
+                                <td class="text-center">
+                                    <a asp-area="admin" asp-controller="ProjectType" asp-action="UpdatePT" asp-route-id="@item.Id" class="btn btm-sm btn-primary">Sửa</a>
+                                    <a asp-area="admin" asp-controller="ProjectType" asp-action="DeletePT" asp-route-id="@item.Id" class="btn btm-sm btn-danger btnDelete">Xóa</a>
+                                </td>
+                            </tr>
+                            i++;
+                        }
 
-                </tbody>
+                    </tbody>
+                }
+                
             </table>
-
-        </div>
+            <div class="row">
+                <div class="col-5">
+                   
+                </div>
+                <div class="col-7">
+                     @Html.PagedListPager(Model, page => Url.Action("Index", new { page ,pageAize=5}))
+                </div>
+                
+            </div>
+         </div>
         <!-- /.card-body -->
         <div class="card-footer">
         </div>
