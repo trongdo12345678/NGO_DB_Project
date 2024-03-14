@@ -3,6 +3,7 @@ using NGO_DB_Project.Models;
 using NGO_DB_Project.Service;
 using System.Diagnostics;
 using PagedList;
+using System.Drawing.Printing;
 
 namespace NGO_DB_Project.Areas.Admin.Controllers;
 [Area("Admin")]
@@ -14,19 +15,17 @@ public class ProjectTypeController : Controller
         _projectypeService = projectypeService;
     }
     //[Route("~/")] // uu tieen chay truowc ham nay
-    public IActionResult Index(int? page,int? pagesize)
+    [Route("/Admin/ProjectType/Index/{page}")]
+    [Route("/Admin/ProjectType/Index")]
+    public IActionResult Index(int page=1)
     {
-         if(page == null)
-        {
-            page = 1;
-        }
-         if(pagesize == null)
-        {
-            pagesize = 10;
-        }
-         var ProPt = _projectypeService.GetProtype();
+        
+         var (totalPage,currentPage) = _projectypeService.GetPaginationInfo(3, page);
+        ViewBag.ProT = _projectypeService.GetlistPbyPages(page,3);
+        ViewBag.TotalPage = totalPage;
+        ViewBag.CurrentPage = currentPage;
         //ViewBag.ProT = _projectypeService.GetProtype();
-        return View(ProPt.ToPagedList((int)page, (int)pagesize));
+        return View();
     }
     public IActionResult AddPT()
     {

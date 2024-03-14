@@ -9,4 +9,6 @@ public interface ProjectypeService
 	public bool DeletePTy(int id);
     public bool UpdatePTy(ProjectType pt);
 	public ProjectType GetPT(int id);
+    public (int, int) GetPaginationInfo(int pageSize, int currentPage);
+    public List<ProjectType> GetlistPbyPages(int page, int pageSize);
 }

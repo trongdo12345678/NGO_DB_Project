@@ -7,7 +7,7 @@ public partial class ProjectType
 {
     public int Id { get; set; }
 
-    public string? TypeName { get; set; } //danh muc 
+    public string? TypeName { get; set; }
 
     public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
 }

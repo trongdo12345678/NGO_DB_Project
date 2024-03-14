@@ -1,10 +1,10 @@
-﻿
-@using PagedList.Mvc;
+﻿@using PagedList.Mvc;
 @using PagedList;
 @model IPagedList<NGO_DB_Project.Models.ProjectType>
 
 @{
     Layout = "_LayoutAdmin";
+
 }
 
 
@@ -16,10 +16,10 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin/home" class="nav-link">Trang chủ</a>
+            <a href="#" class="nav-link">Home</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin/category" class="nav-link">Danh mục</a>
+            <a href="#" class="nav-link">Project Type</a>
         </li>
     </ul>
 }
@@ -28,28 +28,34 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Quản lý danh mục</h1>
+                <h1>Manage Project Type</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
-                    <li class="breadcrumb-item active">Danh Mục</li>
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Project Type</li>
                 </ol>
             </div>
         </div>
     </div><!-- /.container-fluid -->
 </section>
-
+<style>
+    .activeeee {
+        background-color: #0d6efd !important;
+    }
+</style>
 <!-- Main content -->
 <section class="content">
 
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Danh sách danh mục</h3>
+            <h3 class="card-title">
+                List Project Type
+            </h3>
 
             <div class="card-tools">
-                <a href="addpt" class="btn btn-primary">Thêm mới</a>
+                <a asp-action="addpt" class="btn btn-primary" style="margin-right:50px">Add new</a>
             </div>
         </div>
         <div class="card-body">
@@ -62,37 +68,95 @@
 
                     </tr>
                 </thead>
-                @if(Model != null && Model.Any())
-                {
-                    var i = 1;
-                    <tbody>
 
-                        @foreach (var item in Model)
-                        {
-                            <tr id="trow_@item.Id">
-                                <td class="text-center">@item.Id</td>
-                                <td class="text-center">@item.TypeName</td>
-                                <td class="text-center">
-                                    <a asp-area="admin" asp-controller="ProjectType" asp-action="UpdatePT" asp-route-id="@item.Id" class="btn btm-sm btn-primary">Sửa</a>
-                                    <a asp-area="admin" asp-controller="ProjectType" asp-action="DeletePT" asp-route-id="@item.Id" class="btn btm-sm btn-danger btnDelete">Xóa</a>
-                                </td>
-                            </tr>
-                            i++;
+                <tbody>
+
+                    @{
+                        //không hiện id ở stt
+                        var index = 1;
+                        index = index + (ViewBag.CurrentPage - 1) * 3;
+                    }
+
+                    @foreach (var item in ViewBag.ProT)
+                    {
+
+                        <tr id="trow_@item.Id">
+                            <td class="text-center">@index</td>
+                            <td class="text-center">@item.TypeName</td>
+                            <td class="text-center">
+                                <a asp-area="admin" asp-controller="ProjectType" asp-action="UpdatePT" asp-route-id="@item.Id" class="btn btm-sm btn-primary">Edit</a>
+                                <a asp-area="admin" asp-controller="ProjectType" asp-action="DeletePT" asp-route-id="@item.Id" class="btn btm-sm btn-danger btnDelete">Delete</a>
+                            </td>
+                        </tr>
+                        index++;
                         }
 
-                    </tbody>
-                }
-                
             </table>
+
             <div class="row">
-                <div class="col-5">
-                   
+                <div class="col-md-5">
                 </div>
-                <div class="col-7">
+                <div class="col-md-7 mt-3">
+                    <ul style="display:flex;">
+                        <li style="list-style-type:none;padding:10px;border:1px solid black;margin:4px; border-radius:5px;">
+                            <a class="page-link " href="/Admin/ProjectType/Index/1">Firstly</a>
+                        </li>
+                        @{
+                            if (ViewBag.CurrentPage == 1)
+                            {
+                                @for (int i = 1; i <= 3; i++)
+                                {
+                                    <li style="list-style-type:none;padding:10px;border:1px solid black;margin:4px; border-radius:5px;" class="@(i == ViewBag.CurrentPage ? "activeeee" : "")">
+                                        <a class="page-link " href="/Admin/ProjectType/Index/@i">@i</a>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                if (ViewBag.CurrentPage + 2 > ViewBag.TotalPage)
+                                {
+                                    @for (int i = ViewBag.CurrentPage; i <= ViewBag.TotalPage; i++)
+                                    {
+                                        <li style="list-style-type:none;padding:10px;border:1px solid black;margin:4px; border-radius:5px;" class="@(i == ViewBag.CurrentPage ? "activeeee" : "")">
+                                            <a class="page-link " href="/Admin/ProjectType/Index/@i">@i</a>
+                                        </li>
+                                    }
+                                }
+                                else
+                                {
+                                    if (ViewBag.CurrentPage == ViewBag.TotalPage)
+                                    {
+                                        @for (int i = ViewBag.TotalPage - 1; i <= ViewBag.TotalPage; i++)
+                                        {
+                                            <li style="list-style-type:none;padding:5px;border:1px solid black;margin:4px; border-radius:5px;" class="@(i == ViewBag.CurrentPage ? "activeeee" : "")">
+                                                <a class="page-link " href="/Admin/ProjectType/Index/@i">@i</a>
+                                            </li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @for (int i = ViewBag.CurrentPage - 1; i <= ViewBag.CurrentPage + 1; i++)
+                                        {
+                                            <li style="list-style-type:none;padding:10px;border:1px solid black;margin:4px; border-radius:5px;" class="@(i == ViewBag.CurrentPage ? "activeeee" : "")">
+                                                <a class="page-link " href="/Admin/ProjectType/Index/@i">@i</a>
+                                            </li>
+                                        }
+                                    }
+
+                                }
+
+                            }
+
+                        }
+
+                        <li style="list-style-type:none;padding:10px;border:1px solid black;margin:4px; border-radius:5px;">
+                            <a class="page-link " href="/Admin/ProjectType/Index/@ViewBag.TotalPage">Final</a>
+                        </li>
+                    </ul>
                 </div>
-                
             </div>
-         </div>
+            
+        </div>
         <!-- /.card-body -->
         <div class="card-footer">
         </div>

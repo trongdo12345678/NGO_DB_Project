@@ -28,7 +28,7 @@ public partial class GiveAidContext : DbContext
     public virtual DbSet<Role> Roles { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Data Source=TRONGDO\\SQLEXPRESS;Initial Catalog=Give_AID;User ID=sa;Password=trongdo123;Trust Server Certificate=True");
+        => optionsBuilder.UseSqlServer("Data Source=TRONGDO\\SQLEXPRESS;Initial Catalog=Give_AID;Persist Security Info=True;User ID=sa;Password=trongdo123;;Encrypt=True;Trust Server Certificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -107,6 +107,9 @@ public partial class GiveAidContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Description).HasColumnType("text");
+            entity.Property(e => e.Img)
+                .HasColumnType("text")
+                .HasColumnName("img");
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .IsUnicode(false);

@@ -95,5 +95,44 @@ public class ProjectTypeServiceImpl : ProjectypeService
             return false;
         }
     }
+    //lấy tổng số trang của cái bản projectType 
+    public (int, int) GetPaginationInfo(int pageSize, int currentPage)
+    {
+        try
+        {
+            int totalItems = _context.ProjectTypes.Count();
+
+            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+
+            currentPage = Math.Max(1, Math.Min(currentPage, totalPages));
+
+            return (totalPages, currentPage);
+        }
+        catch (Exception)
+        {
+            return (1, 1);
+        }
+    }
+    //lấy projecttype theo từng trang 
+    public List<ProjectType> GetlistPbyPages(int page, int pageSize)
+    {
+        try
+        {
+
+            int skip = (page - 1) * pageSize;
+
+            var projects = _context.ProjectTypes
+             .OrderByDescending(pt => pt.Id)
+             .Skip(skip)
+             .Take(pageSize)
+             .ToList();
+
+            return projects;
+        }
+        catch (Exception)
+        {
+            return [];
+        }
+    }
 
 }
