@@ -20,8 +20,8 @@ public class ProjectTypeController : Controller
     public IActionResult Index(int page=1)
     {
         
-         var (totalPage,currentPage) = _projectypeService.GetPaginationInfo(3, page);
-        ViewBag.ProT = _projectypeService.GetlistPbyPages(page,3);
+         var (totalPage,currentPage) = _projectypeService.GetPaginationInfo(5, page);
+        ViewBag.ProT = _projectypeService.GetlistPbyPages(page,5);
         ViewBag.TotalPage = totalPage;
         ViewBag.CurrentPage = currentPage;
         //ViewBag.ProT = _projectypeService.GetProtype();
@@ -29,15 +29,39 @@ public class ProjectTypeController : Controller
     }
     public IActionResult AddPT()
     {
-        return View();
+        var mess = TempData["Mess"] as string;
+        if(mess == "")
+        {
+			ViewBag.Mess = "";
+
+        }
+        else
+        {
+			ViewBag.Mess = mess;
+		}
+		
+
+		return View();
     }
     [HttpPost]
 	public IActionResult Add(ProjectType pt)
     {
-          //Debug.WriteLine(pt);  
-        _projectypeService.AddPTy(pt);
-        return RedirectToAction("Index");
-    }
+        //Debug.WriteLine(pt);
+        if (!ModelState.IsValid)
+        {
+            TempData["Mess"] = "Please enter a font name";
+            //ModelState.AddModelError("TypeName", "pleal,Project Type");
+			return RedirectToAction("AddPT");
+		}
+		else
+        {
+			_projectypeService.AddPTy(pt);
+			return RedirectToAction("Index");
+
+		}
+
+
+	}
     
     public IActionResult DeletePT(int id)
     {
@@ -47,16 +71,35 @@ public class ProjectTypeController : Controller
 	}
     public IActionResult UpdatePT(int Id)
     {
+		var mess = TempData["Mess"] as string;
+		if (mess == "")
+		{
+			ViewBag.Mess = "";
+
+		}
+		else
+		{
+			ViewBag.Mess = mess;
+		}
 		var proPT = _projectypeService.GetPT(Id);
 		return View("UpdatePT", proPT);
     }
     [HttpPost]
     public IActionResult Update(ProjectType pt)
-    {
-        //Debug.WriteLine(pt);  
+    { 
 
-        _projectypeService.UpdatePTy(pt);
-        return RedirectToAction("Index");
+        if(!ModelState.IsValid)
+        {
+			TempData["Mess"] = "Please enter a font name";
+			//ModelState.AddModelError("TypeName", "pleal,Project Type");
+			return RedirectToAction("UpdatePT");
+        }
+        else
+        {
+			_projectypeService.UpdatePTy(pt);
+			return RedirectToAction("Index");
+		}
+        
     }
 	
 }

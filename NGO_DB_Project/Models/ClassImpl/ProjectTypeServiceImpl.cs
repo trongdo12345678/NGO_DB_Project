@@ -59,6 +59,7 @@ public class ProjectTypeServiceImpl : ProjectypeService
             return false;
         }
     }
+    //laays 1 phanf vd typename
 	public ProjectType GetPT(int id)
 	{
 		try
