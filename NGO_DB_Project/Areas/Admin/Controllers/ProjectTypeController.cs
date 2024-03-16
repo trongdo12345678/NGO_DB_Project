@@ -14,7 +14,6 @@ public class ProjectTypeController : Controller
     {
         _projectypeService = projectypeService;
     }
-    //[Route("~/")] // uu tieen chay truowc ham nay
     [Route("/Admin/ProjectType/Index/{page}")]
     [Route("/Admin/ProjectType/Index")]
     public IActionResult Index(int page=1)
@@ -45,11 +44,9 @@ public class ProjectTypeController : Controller
     [HttpPost]
 	public IActionResult Add(ProjectType pt)
     {
-        //Debug.WriteLine(pt);
         if (!ModelState.IsValid)
         {
             TempData["Mess"] = "Please enter a font name";
-            //ModelState.AddModelError("TypeName", "pleal,Project Type");
 			return RedirectToAction("AddPT");
 		}
 		else
@@ -64,9 +61,16 @@ public class ProjectTypeController : Controller
     
     public IActionResult DeletePT(int id)
     {
-        //Debug.WriteLine(id);
-		_projectypeService.DeletePTy(id);
-		return RedirectToAction("Index");
+        try
+        {
+            _projectypeService.DeletePTy(id);
+            return RedirectToAction("Index");
+        }catch (Exception)
+        {
+            // Xử lý lỗi nếu có
+            return Json(new { success = false, message = "Đã xảy ra lỗi khi xóa dữ liệu." });
+        }
+		
 	}
     public IActionResult UpdatePT(int Id)
     {
@@ -90,7 +94,6 @@ public class ProjectTypeController : Controller
         if(!ModelState.IsValid)
         {
 			TempData["Mess"] = "Please enter a font name";
-			//ModelState.AddModelError("TypeName", "pleal,Project Type");
 			return RedirectToAction("UpdatePT");
         }
         else

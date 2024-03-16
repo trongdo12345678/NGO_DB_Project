@@ -14,8 +14,8 @@ public class ProjectController : Controller
     {
         _projectService = projectService;
     }
-
-    [Route("/Admin/Project/Index/{page}")]
+	[Route("~/")]
+	[Route("/Admin/Project/Index/{page}")]
     [Route("/Admin/Project/Index")]
     public IActionResult Index(int page = 1)
     {
@@ -24,21 +24,39 @@ public class ProjectController : Controller
         ViewBag.Pro = _projectService.GetlistPbyPages(page, 5);
         ViewBag.TotalPage = totalPage;
         ViewBag.CurrentPage = currentPage;
-        //ViewBag.ProT = _projectypeService.GetProtype();
         return View();
     }
-    [Route("~/")]
+  
     public IActionResult AddPro()
     {
+		var mess = TempData["Mess"] as string;
+		if (mess == "")
+		{
+			ViewBag.Mess = "";
+
+		}
+		else
+		{
+			ViewBag.Mess = mess;
+		}
 		ViewBag.ProT = _projectService.GetProtype();
 		return View();
     }
     [HttpPost]
     public IActionResult Add(Project pro)
     {
-		pro.StartDate = DateOnly.FromDateTime(DateTime.Now);
-        _projectService.AddPro(pro);
-        return RedirectToAction("Index");
+		if (!ModelState.IsValid)
+		{
+			TempData["Mess"] = "Please do not leave this box blank";
+			return RedirectToAction("AddPro");
+		}
+		else
+		{
+			pro.StartDate = DateOnly.FromDateTime(DateTime.Now);
+			_projectService.AddPro(pro);
+			return RedirectToAction("Index");
+		}
+		
     }
 	[HttpPost]
 	public IActionResult Upload(IFormFile file)
@@ -47,13 +65,24 @@ public class ProjectController : Controller
 
 		if (fileName != null)
 		{
-			// Xử lý thành công
 			return RedirectToAction("Success");
 		}
 		else
 		{
-			// Xử lý thất bại
 			return RedirectToAction("Error");
 		}
 	}
+    public IActionResult DeletePro(int id)
+    {
+        try
+        {
+            _projectService.DeletePro(id);
+            return RedirectToAction("Index");
+        }
+        catch (Exception)
+        {
+            // Xử lý lỗi nếu có
+            return Json(new { success = false, message = "An error occurred while deleting data." });
+        }
+    }
 }

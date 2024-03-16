@@ -9,4 +9,5 @@ public interface ProjectService
     public List<Project> GetlistPbyPages(int page, int pageSize);
     public bool AddPro(Project pro);
 	public string UploadFile(IFormFile file);
+	public bool DeletePro(int id);
 }

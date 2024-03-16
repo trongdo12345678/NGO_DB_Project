@@ -85,7 +85,7 @@
                             <td class="text-center">@item.TypeName</td>
                             <td class="text-center">
                                 <a asp-area="admin" asp-controller="ProjectType" asp-action="UpdatePT" asp-route-id="@item.Id" class="btn btm-sm btn-primary">Edit</a>
-                                <a asp-area="admin" asp-controller="ProjectType" asp-action="DeletePT" asp-route-id="@item.Id" class="btn btm-sm btn-danger btnDelete">Delete</a>
+                                <a asp-area="admin" asp-controller="ProjectType" asp-action="DeletePT" asp-route-id="@item.Id" onclick="confirmDelete(@item.Id)" class="btn btm-sm btn-danger btnDelete">Delete</a>
                             </td>
                         </tr>
                         index++;
@@ -154,14 +154,30 @@
                         </li>
                     </ul>
                 </div>
-            </div>
-            
+            </div>  
         </div>
-        <!-- /.card-body -->
-        <div class="card-footer">
-        </div>
-        <!-- /.card-footer-->
     </div>
-    <!-- /.card -->
 
 </section>
+@section scripts {
+
+    <script>
+        function confirmDelete(id) {
+            if (confirm("Are you sure you want to delete?")) {
+                $.ajax({
+                    url: '@Url.Action("DeletePT", "ProjectType")',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Đã xảy ra lỗi khi xóa dữ liệu.");
+                    }
+                });
+            }
+        }
+    </script>
+}

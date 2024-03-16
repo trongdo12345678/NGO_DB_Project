@@ -131,7 +131,22 @@ public class ProjectServicempl : ProjectService
 
 		return null;
 	}
-
+	public bool DeletePro(int id)
+	{
+		try
+		{
+			var d = _context.Projects.FirstOrDefault(p => p.Id.Equals(id));
+			if (d != null)
+			{
+				_context.Projects.Remove(d);
+				return _context.SaveChanges() > 0;
+			}
+			return false;
+		}catch (Exception)
+		{
+			return false;
+		}
+	}
 
 
 }
