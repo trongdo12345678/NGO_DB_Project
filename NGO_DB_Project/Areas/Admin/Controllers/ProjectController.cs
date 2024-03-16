@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NGO_DB_Project.Models;
 using NGO_DB_Project.Service;
+using System;
 using System.Diagnostics;
 
 namespace NGO_DB_Project.Areas.Admin.Controllers;
@@ -14,7 +15,7 @@ public class ProjectController : Controller
     {
         _projectService = projectService;
     }
-	[Route("~/")]
+	//[Route("~/")]
 	[Route("/Admin/Project/Index/{page}")]
     [Route("/Admin/Project/Index")]
     public IActionResult Index(int page = 1)
@@ -29,33 +30,18 @@ public class ProjectController : Controller
   
     public IActionResult AddPro()
     {
-		var mess = TempData["Mess"] as string;
-		if (mess == "")
-		{
-			ViewBag.Mess = "";
-
-		}
-		else
-		{
-			ViewBag.Mess = mess;
-		}
+		
 		ViewBag.ProT = _projectService.GetProtype();
 		return View();
     }
     [HttpPost]
     public IActionResult Add(Project pro)
     {
-		if (!ModelState.IsValid)
-		{
-			TempData["Mess"] = "Please do not leave this box blank";
-			return RedirectToAction("AddPro");
-		}
-		else
-		{
+		//Debug.WriteLine("hcsahaldadkajdasjdaldjad");
+		//	Debug.WriteLine(pro.EndDate);
 			pro.StartDate = DateOnly.FromDateTime(DateTime.Now);
 			_projectService.AddPro(pro);
 			return RedirectToAction("Index");
-		}
 		
     }
 	[HttpPost]
@@ -88,16 +74,6 @@ public class ProjectController : Controller
 
 	public IActionResult UpdatePro(int Id)
 	{
-		var mess = TempData["Mess"] as string;
-		if (mess == "")
-		{
-			ViewBag.Mess = "";
-
-		}
-		else
-		{
-			ViewBag.Mess = mess;
-		}
 		ViewBag.ProT = _projectService.GetProtype();
 		var pro = _projectService.GetPro(Id);
 		return View("UpdatePro", pro);
@@ -106,17 +82,9 @@ public class ProjectController : Controller
 	[HttpPost]
 	public IActionResult Update(Project pro)
 	{
-		if (!ModelState.IsValid)
-		{
-			TempData["Mess"] = "Please do not leave this box blank";
-			return RedirectToAction("UpdatePro");
-		}
-		else
-		{
 			pro.StartDate = DateOnly.FromDateTime(DateTime.Now);
 			_projectService.UpdatePro(pro);
 			return RedirectToAction("Index");
-		}
 		
 	}
 }
