@@ -11,9 +11,24 @@ public class ProjectServicempl : ProjectService
     {
         _context = context;
     }
+	//laays 1 phanf vd typename
+	public Project GetPro(int id)
+	{
+		try
+		{
+			var project = _context.Projects
 
-    //lấy tổng số trang của cái bản projectType 
-    public (int, int) GetPaginationInfo(int pageSize, int currentPage)
+				.FirstOrDefault(p => p.Id == id);
+			if (project != null) return project;
+			return new Project();
+		}
+		catch (Exception)
+		{
+			return new Project();
+		}
+	}
+	//lấy tổng số trang của cái bản projectType 
+	public (int, int) GetPaginationInfo(int pageSize, int currentPage)
     {
         try
         {
@@ -51,6 +66,7 @@ public class ProjectServicempl : ProjectService
             return [];
         }
     }
+	//khoa ngoai
 	public List<ProjectType> GetProtype()
 	{
 		try
@@ -146,6 +162,31 @@ public class ProjectServicempl : ProjectService
 		{
 			return false;
 		}
+	}
+	public bool UpdatePro(Project pro)
+	{
+		try
+		{
+			var e = _context.Projects.FirstOrDefault(e => e.Id == pro.Id);
+			if(e != null)
+			{
+				e.Name = pro.Name;
+				e.Description = pro.Description;
+				e.Img = pro.Img;
+				e.EndDate = pro.EndDate;
+				e.StartDate = pro.StartDate;
+				e.TargetAmount = pro.TargetAmount;
+				e.ProjectTypeId = pro.ProjectTypeId;
+
+				return _context.SaveChanges() > 0;
+			}
+			return false;
+		}
+		catch(Exception) { 
+
+			return false;
+		}
+
 	}
 
 

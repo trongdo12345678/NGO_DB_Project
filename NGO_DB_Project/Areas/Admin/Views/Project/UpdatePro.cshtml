@@ -1,0 +1,192 @@
+﻿@model NGO_DB_Project.Models.Project
+@{
+    Layout = "_LayoutAdmin";
+}
+
+<form asp-area="Admin" asp-controller="Project" asp-action="Update" enctype="multipart/form-data" method="post">
+	<div class="card-body">
+		<div class="bs-stepper-content">
+			<div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
+				<div class="form-group">
+					<input asp-for="Id" type="hidden" class="mdc-text-field__input form-control" />
+					<span class="text-danger">@ViewBag.Mess</span>
+				</div>
+				<div class="form-group">
+					<label for="TypeName">Name</label>
+					<input asp-for="Name" type="text" class="mdc-text-field__input form-control" />
+					<span class="text-danger">@ViewBag.Mess</span>
+				</div>
+				<div class="form-group">
+					<label for="Description">Description</label>
+					<textarea asp-for="Description" id="txtDetail" class="mdc-text-field__input form-control"></textarea>
+					<span class="text-danger">@ViewBag.Mess</span>
+				</div>
+				<div class="form-group">
+					<label for="exampleInputFile">Images</label>
+					<div class="input-group">
+						<div class="custom-file">
+							<input asp-for="Img" type="text" id="txtImage" class="form-control" />
+						</div>
+						<div class="input-group-append">
+							<label class="btn btn-primary">
+								Open file <input type="file" style="display: none;" onchange="handleFileSelect(event)">
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="exampleInputEmail1">TypeName</label>
+					<select asp-for="ProjectTypeId" class="form-control">
+						<option value="">--Select product category--</option>
+						@foreach (var item in ViewBag.ProT)
+						{
+							<option value="@item.Id">@item.TypeName</option>
+						}
+					</select>
+					<span class="text-danger">@Html.ValidationMessageFor(x => x.ProjectTypeId)</span>
+				</div>
+				<div class="form-group">
+					<label for="TargetAmount">TargetAmount</label>
+					<input id="targetAmountInput" asp-for="TargetAmount" type="text" class="mdc-text-field__input form-control" />
+					<span class="text-danger">@ViewBag.Mess</span>
+				</div>
+
+				<div class="form-group">
+					<label for="EndDate">EndDate</label>
+					<div class="custom-file">
+						<form id="formEndDate">
+							<input asp-for="EndDate" asp-format="{0:MM/dd/yyyy}" type="text" class="mdc-text-field__input form-control datepicker" onclick="showDateTimePicker()" readonly />
+						</form>
+					</div>
+					<div class="input-group-append">
+						<div id="datetimepicker" class="datetimepicker">
+							<div class="datetimepicker-content">
+								<div class="datetimepicker-header">
+									<button class="close" onclick="hideDateTimePicker()">&times;</button>
+									<h3>Select End Date</h3>
+								</div>
+								<div class="datetimepicker-body">
+									<input type="date" id="datepicker" class="form-control" />
+									<input type="time" id="timepicker" class="form-control" />
+									<button type="button" onclick="setSelectedDateTime()">OK</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<a href="index" class="btn btn-danger">Exit</a>
+					<button type="submit" class="btn btn-primary">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+@section scripts {
+
+	<script>
+		//bản chỉnh details
+		$(Document).ready(function () {
+			CKEDITOR.replace('txtDetail', {
+				customConfig: '/ckeditor/config.js',
+				extraAllowedContent: 'span',
+			});
+		})
+		//ngay tháng năm
+		function showDateTimePicker() {
+			document.getElementById('datetimepicker').style.display = 'block';
+		}
+
+		function hideDateTimePicker() {
+			document.getElementById('datetimepicker').style.display = 'none';
+		}
+		function setSelectedDateTime() {
+			var date = document.getElementById('datepicker').value;
+			var time = document.getElementById('timepicker').value;
+
+			// Tạo một đối tượng Date từ ngày được chọn
+			var selectedDate = new Date(date);
+
+			// Lấy giá trị năm, tháng và ngày
+			var year = selectedDate.getFullYear();
+			var month = selectedDate.getMonth() + 1; // Lưu ý: Tháng bắt đầu từ 0
+			var day = selectedDate.getDate();
+
+			// Định dạng tháng và ngày thành chuỗi hai ký tự (ví dụ: 01, 02, ..., 10, 11, ...)
+			var formattedMonth = ('0' + month).slice(-2);
+			var formattedDay = ('0' + day).slice(-2);
+
+			// Định dạng lại thành chuỗi "yyyy-MM-dd"
+			var selectedDateTime = year + '-' + formattedMonth + '-' + formattedDay + ' ' + time;
+
+			// Gán giá trị đã chọn vào trường nhập liệu
+			document.querySelector('.datepicker').value = selectedDateTime;
+
+			// Ẩn datetime picker
+			hideDateTimePicker();
+		}
+
+		//gía tiền
+		$(document).ready(function () {
+			$('#targetAmountInput').on('input', function () {
+				var inputVal = $(this).val();
+				var newVal = inputVal.replace(/\D/g, '');
+				newVal = newVal.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+				$(this).data('raw-value', newVal);
+				$(this).val(newVal);
+			});
+		});
+		$('#formEndDate').submit(function () {
+			var rawValue = $('#targetAmountInput').data('raw-value');
+			// Bạn có thể sử dụng rawValue để thực hiện các thao tác tiếp theo, ví dụ: chuyển đổi thành kiểu số
+		});
+		//tải ảnh lên
+		function handleFileSelect(event) {
+			const files = event.target.files;
+
+			if (files.length > 0) {
+				const reader = new FileReader();
+
+				reader.onload = function (e) {
+					// Lưu đường dẫn của ảnh vào trường ẩn
+					document.getElementById('txtImage').value = e.target.result;
+				};
+
+				reader.readAsDataURL(files[0]);
+			}
+		}
+
+
+	</script>
+
+}
+<style>
+	.datetimepicker {
+		display: none;
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background-color: #fff;
+		padding: 20px;
+		border: 1px solid #ccc;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		z-index: 9999;
+	}
+
+	.datetimepicker-content {
+		max-width: 300px;
+	}
+
+	.datetimepicker-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.datetimepicker-body input {
+		margin-bottom: 10px;
+	}
+
+</style>

@@ -85,4 +85,38 @@ public class ProjectController : Controller
             return Json(new { success = false, message = "An error occurred while deleting data." });
         }
     }
+
+	public IActionResult UpdatePro(int Id)
+	{
+		var mess = TempData["Mess"] as string;
+		if (mess == "")
+		{
+			ViewBag.Mess = "";
+
+		}
+		else
+		{
+			ViewBag.Mess = mess;
+		}
+		ViewBag.ProT = _projectService.GetProtype();
+		var pro = _projectService.GetPro(Id);
+		return View("UpdatePro", pro);
+	}
+
+	[HttpPost]
+	public IActionResult Update(Project pro)
+	{
+		if (!ModelState.IsValid)
+		{
+			TempData["Mess"] = "Please do not leave this box blank";
+			return RedirectToAction("UpdatePro");
+		}
+		else
+		{
+			pro.StartDate = DateOnly.FromDateTime(DateTime.Now);
+			_projectService.UpdatePro(pro);
+			return RedirectToAction("Index");
+		}
+		
+	}
 }
