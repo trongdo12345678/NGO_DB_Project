@@ -12,7 +12,9 @@ builder.Services.AddDbContext<GiveAidContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+//caaus hinh khi tao project moi
 builder.Services.AddScoped<ProjectypeService, ProjectTypeServiceImpl>();
+builder.Services.AddScoped<ProjectService, ProjectServicempl>();
 
 var app = builder.Build();
 

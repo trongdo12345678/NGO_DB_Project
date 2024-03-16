@@ -24,7 +24,6 @@ public class ProjectTypeController : Controller
         ViewBag.ProT = _projectypeService.GetlistPbyPages(page,5);
         ViewBag.TotalPage = totalPage;
         ViewBag.CurrentPage = currentPage;
-        //ViewBag.ProT = _projectypeService.GetProtype();
         return View();
     }
     public IActionResult AddPT()

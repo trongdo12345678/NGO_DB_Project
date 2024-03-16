@@ -35,9 +35,8 @@ public class ProjectTypeServiceImpl : ProjectypeService
             _context.ProjectTypes.Add(pt);
             return _context.SaveChanges() > 0;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            Console.WriteLine(ex.Message);
             return false;
         }
     }

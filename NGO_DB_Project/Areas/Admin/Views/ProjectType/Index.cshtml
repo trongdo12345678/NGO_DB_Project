@@ -104,7 +104,7 @@
                         @{
                             if (ViewBag.CurrentPage == 1)
                             {
-                                @for (int i = 1; i <= 3; i++)
+                                @for (int i = 1; i <= ViewBag.TotalPage; i++)
                                 {
                                     <li style="list-style-type:none;padding:10px;border:1px solid black;margin:4px; border-radius:5px;" class="@(i == ViewBag.CurrentPage ? "activeeee" : "")">
                                         <a class="page-link " href="/Admin/ProjectType/Index/@i">@i</a>
