@@ -56,6 +56,7 @@
             </div>
         </div>
         <div class="card-body">
+            
             <table class="table table-hover">
                 <thead>
                     <tr class="text-center">
@@ -69,7 +70,7 @@
                     </tr>
                 </thead>
 
-                <tbody>
+                <tbody id="projectList">
 
                     @foreach (var item in ViewBag.Pro)
                     {
@@ -164,6 +165,21 @@
                     }
                 });
             }
+        }
+        function search() {
+            var keyword = document.getElementById("searchInput").value;
+
+            $.ajax({
+                type: "GET",
+                url: "/Admin/Project/Index",
+                data: { keyword: keyword },
+                success: function (data) {
+                    $('#projectList').html(data);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
         }
     </script>
 }

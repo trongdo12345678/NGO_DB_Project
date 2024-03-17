@@ -74,34 +74,34 @@ public class ProjectTypeController : Controller
 	}
     public IActionResult UpdatePT(int Id)
     {
-		var mess = TempData["Mess"] as string;
-		if (mess == "")
-		{
-			ViewBag.Mess = "";
+        var mess = TempData["Mess"] as string;
+        if (mess == "")
+        {
+            ViewBag.Mess = "";
 
-		}
-		else
-		{
-			ViewBag.Mess = mess;
-		}
-		var proPT = _projectypeService.GetPT(Id);
+        }
+        else
+        {
+            ViewBag.Mess = mess;
+        }
+        var proPT = _projectypeService.GetPT(Id);
 		return View("UpdatePT", proPT);
     }
     [HttpPost]
     public IActionResult Update(ProjectType pt)
-    { 
-
-        if(!ModelState.IsValid)
+    {
+        if (!ModelState.IsValid)
         {
-			TempData["Mess"] = "Please enter a font name";
-			return RedirectToAction("UpdatePT");
+            TempData["Mess"] = "Please enter a font name";
+            return RedirectToAction("UpdatePT");
         }
         else
         {
-			_projectypeService.UpdatePTy(pt);
-			return RedirectToAction("Index");
-		}
-        
+            _projectypeService.UpdatePTy(pt);
+            return RedirectToAction("Index");
+        }
+            
+
     }
 	
 }

@@ -15,6 +15,7 @@ builder.Services.AddDbContext<GiveAidContext>(options =>
 //caaus hinh khi tao project moi
 builder.Services.AddScoped<ProjectypeService, ProjectTypeServiceImpl>();
 builder.Services.AddScoped<ProjectService, ProjectServicempl>();
+builder.Services.AddScoped<MemberService, MemberServicempl>();
 
 var app = builder.Build();
 

@@ -93,7 +93,7 @@
 
             </table>
 
-            <div class="row">
+            <diiv class="row">
                 <div class="col-md-5">
                 </div>
                 <div class="col-md-7 mt-3">
@@ -101,61 +101,37 @@
                         <li style="list-style-type:none;padding:10px;border:1px solid black;margin:4px; border-radius:5px;">
                             <a class="page-link " href="/Admin/ProjectType/Index/1">Firstly</a>
                         </li>
-                        @{
-                            if (ViewBag.CurrentPage == 1)
-                            {
-                                @for (int i = 1; i <= ViewBag.TotalPage; i++)
-                                {
-                                    <li style="list-style-type:none;padding:10px;border:1px solid black;margin:4px; border-radius:5px;" class="@(i == ViewBag.CurrentPage ? "activeeee" : "")">
-                                        <a class="page-link " href="/Admin/ProjectType/Index/@i">@i</a>
-                                    </li>
-                                }
-                            }
-                            else
-                            {
-                                if (ViewBag.CurrentPage + 2 > ViewBag.TotalPage)
-                                {
-                                    @for (int i = ViewBag.CurrentPage; i <= ViewBag.TotalPage; i++)
-                                    {
-                                        <li style="list-style-type:none;padding:10px;border:1px solid black;margin:4px; border-radius:5px;" class="@(i == ViewBag.CurrentPage ? "activeeee" : "")">
-                                            <a class="page-link " href="/Admin/ProjectType/Index/@i">@i</a>
-                                        </li>
-                                    }
-                                }
-                                else
-                                {
-                                    if (ViewBag.CurrentPage == ViewBag.TotalPage)
-                                    {
-                                        @for (int i = ViewBag.TotalPage - 1; i <= ViewBag.TotalPage; i++)
-                                        {
-                                            <li style="list-style-type:none;padding:5px;border:1px solid black;margin:4px; border-radius:5px;" class="@(i == ViewBag.CurrentPage ? "activeeee" : "")">
-                                                <a class="page-link " href="/Admin/ProjectType/Index/@i">@i</a>
-                                            </li>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        @for (int i = ViewBag.CurrentPage - 1; i <= ViewBag.CurrentPage + 1; i++)
-                                        {
-                                            <li style="list-style-type:none;padding:10px;border:1px solid black;margin:4px; border-radius:5px;" class="@(i == ViewBag.CurrentPage ? "activeeee" : "")">
-                                                <a class="page-link " href="/Admin/ProjectType/Index/@i">@i</a>
-                                            </li>
-                                        }
-                                    }
 
-                                }
-
-                            }
-
+                        @if (ViewBag.CurrentPage > 1)
+                        {
+                            <li style="list-style-type:none;padding:10px;border:1px solid black;margin:4px; border-radius:5px;">
+                                <a class="page-link " href="/Admin/ProjectType/Index/@(ViewBag.CurrentPage - 1)">@((ViewBag.CurrentPage - 1))</a>
+                            </li>
                         }
 
+                        <li style="list-style-type:none;padding:10px;border:1px solid black;margin:4px; border-radius:5px;" class="activeeee">
+                            <a class="page-link " href="/Admin/ProjectType/Index/@(ViewBag.CurrentPage)">@ViewBag.CurrentPage</a>
+                        </li>
+
+                        @if (ViewBag.CurrentPage < ViewBag.TotalPage)
+                        {
+                            <li style="list-style-type:none;padding:10px;border:1px solid black;margin:4px; border-radius:5px;">
+                                <a class="page-link " href="/Admin/ProjectType/Index/@(ViewBag.CurrentPage + 1)">@((ViewBag.CurrentPage + 1))</a>
+                            </li>
+                        }
+                        @if (ViewBag.CurrentPage < ViewBag.TotalPage - 1)
+                        {
+                            <li style="list-style-type:none;padding:10px;border:1px solid black;margin:4px; border-radius:5px;">
+                                <a class="page-link " href="/Admin/ProjectType/Index/@(ViewBag.CurrentPage + 2)">@((ViewBag.CurrentPage + 2))</a>
+                            </li>
+                        }
                         <li style="list-style-type:none;padding:10px;border:1px solid black;margin:4px; border-radius:5px;">
-                            <a class="page-link " href="/Admin/ProjectType/Index/@ViewBag.TotalPage">Final</a>
+                            <a class="page-link " href="/Admin/Project/IndexType/@ViewBag.TotalPage">Final</a>
                         </li>
                     </ul>
                 </div>
-            </div>  
         </div>
+    </div>
     </div>
 
 </section>
