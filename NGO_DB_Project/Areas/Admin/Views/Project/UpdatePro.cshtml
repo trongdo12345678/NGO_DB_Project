@@ -2,24 +2,27 @@
 @{
     Layout = "_LayoutAdmin";
 }
-
+@if (TempData["Mess"] != null)
+{
+	<div class="alert alert-danger" role="alert">
+		@TempData["Mess"]
+	</div>
+}
 <form asp-area="Admin" asp-controller="Project" asp-action="Update" enctype="multipart/form-data" method="post">
 	<div class="card-body">
 		<div class="bs-stepper-content">
 			<div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
 				<div class="form-group">
 					<input asp-for="Id" type="hidden" class="mdc-text-field__input form-control" />
-					<span class="text-danger">@ViewBag.Mess</span>
 				</div>
 				<div class="form-group">
 					<label for="TypeName">Name</label>
 					<input asp-for="Name" type="text" class="mdc-text-field__input form-control" />
-					<span class="text-danger">@ViewBag.Mess</span>
+					<span asp-validation-for="Name" class="text-danger"></span>
 				</div>
 				<div class="form-group">
 					<label for="Description">Description</label>
 					<textarea asp-for="Description" id="txtDetail" class="mdc-text-field__input form-control"></textarea>
-					<span class="text-danger">@ViewBag.Mess</span>
 				</div>
 				<div class="form-group">
 					<label for="exampleInputFile">Images</label>
@@ -48,27 +51,29 @@
 				<div class="form-group">
 					<label for="TargetAmount">TargetAmount</label>
 					<input id="targetAmountInput" asp-for="TargetAmount" type="text" class="mdc-text-field__input form-control" />
-					<span class="text-danger">@ViewBag.Mess</span>
+					<span asp-validation-for="Description" class="text-danger"></span>
 				</div>
 
 				<div class="form-group">
-					<label for="EndDate">EndDate</label>
+					<label for="exampleInputFile">EndTime</label>
 					<div class="custom-file">
 						<form id="formEndDate">
 							<input asp-for="EndDate" asp-format="{0:MM/dd/yyyy}" type="text" class="mdc-text-field__input form-control datepicker" onclick="showDateTimePicker()" readonly />
 						</form>
 					</div>
 					<div class="input-group-append">
-						<div id="datetimepicker" class="datetimepicker">
-							<div class="datetimepicker-content">
-								<div class="datetimepicker-header">
-									<button class="close" onclick="hideDateTimePicker()">&times;</button>
-									<h3>Select End Date</h3>
-								</div>
-								<div class="datetimepicker-body">
-									<input type="date" id="datepicker" class="form-control" />
-									<input type="time" id="timepicker" class="form-control" />
-									<button type="button" onclick="setSelectedDateTime()">OK</button>
+						<div class="input-group-append">
+							<div id="datetimepicker" class="datetimepicker">
+								<div class="datetimepicker-content">
+									<div class="datetimepicker-header">
+										<button class="close" onclick="hideDateTimePicker()">&times;</button>
+										<h3>Chọn Ngày</h3>
+									</div>
+									<div class="datetimepicker-body">
+										<input type="date" id="datepicker" class="form-control datepicker" />
+										<!-- Loại bỏ input cho giờ -->
+										<button type="button" onclick="setSelectedDateTime()">Lưu</button>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -77,14 +82,13 @@
 
 				<div class="form-group">
 					<a href="index" class="btn btn-danger">Exit</a>
-					<button type="submit" class="btn btn-primary">Save</button>
+					<button type="submit" class="btn btn-primary">Edit</button>
 				</div>
 			</div>
 		</div>
 	</div>
 </form>
 @section scripts {
-
 	<script>
 		//bản chỉnh details
 		$(Document).ready(function () {
@@ -101,11 +105,11 @@
 		function hideDateTimePicker() {
 			document.getElementById('datetimepicker').style.display = 'none';
 		}
+
 		function setSelectedDateTime() {
 			var date = document.getElementById('datepicker').value;
-			var time = document.getElementById('timepicker').value;
 
-			// Tạo một đối tượng Date từ ngày được chọn
+			// Lấy giá trị ngày từ input ngày tháng
 			var selectedDate = new Date(date);
 
 			// Lấy giá trị năm, tháng và ngày
@@ -117,15 +121,16 @@
 			var formattedMonth = ('0' + month).slice(-2);
 			var formattedDay = ('0' + day).slice(-2);
 
-			// Định dạng lại thành chuỗi "yyyy-MM-dd"
-			var selectedDateTime = year + '-' + formattedMonth + '-' + formattedDay + ' ' + time;
+			// Định dạng lại thành chuỗi "yyyy/MM/dd"
+			var selectedDateString = year + '/' + formattedMonth + '/' + formattedDay;
 
-			// Gán giá trị đã chọn vào trường nhập liệu
-			document.querySelector('.datepicker').value = selectedDateTime;
+			// Gán giá trị đã chọn vào ô input EndDate
+			document.querySelector('.datepicker').value = selectedDateString;
 
 			// Ẩn datetime picker
 			hideDateTimePicker();
 		}
+
 
 		//gía tiền
 		$(document).ready(function () {

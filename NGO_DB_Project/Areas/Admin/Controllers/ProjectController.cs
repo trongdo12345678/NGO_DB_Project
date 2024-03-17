@@ -27,23 +27,50 @@ public class ProjectController : Controller
         ViewBag.CurrentPage = currentPage;
         return View();
     }
-  
-    public IActionResult AddPro()
+	//[Route("~/")]
+	public IActionResult AddPro()
     {
-		
+		var mess = TempData["Mess"] as string;
+		if (mess == "")
+		{
+			ViewBag.Mess = "";
+
+		}
+		else
+		{
+			ViewBag.Mess = mess;
+		}
 		ViewBag.ProT = _projectService.GetProtype();
 		return View();
     }
     [HttpPost]
-    public IActionResult Add(Project pro)
-    {
-		//Debug.WriteLine("hcsahaldadkajdasjdaldjad");
-		//	Debug.WriteLine(pro.EndDate);
+	public IActionResult Add(Project pro)
+	{
+		if (!ModelState.IsValid)
+		{
+			// Kiểm tra từng trường input và chỉ cảnh báo khi trường đó null
+			if (string.IsNullOrEmpty(pro.Name))
+				ModelState.AddModelError("Name", "Please enter a name.");
+
+			if (pro.StartDate == null)
+				ModelState.AddModelError("StartDate", "Please enter a start date.");
+
+			if (string.IsNullOrEmpty(pro.Description))
+				ModelState.AddModelError("Description", "Please enter a description.");
+
+			// Thực hiện kiểm tra các trường khác nếu cần
+
+			TempData["Mess"] = "Please do not leave blank boxes";
+			return RedirectToAction("AddPro");
+		}
+		else
+		{
 			pro.StartDate = DateOnly.FromDateTime(DateTime.Now);
 			_projectService.AddPro(pro);
 			return RedirectToAction("Index");
-		
-    }
+		}
+	}
+
 	[HttpPost]
 	public IActionResult Upload(IFormFile file)
 	{
@@ -74,6 +101,16 @@ public class ProjectController : Controller
 
 	public IActionResult UpdatePro(int Id)
 	{
+		var mess = TempData["Mess"] as string;
+		if (mess == "")
+		{
+			ViewBag.Mess = "";
+
+		}
+		else
+		{
+			ViewBag.Mess = mess;
+		}
 		ViewBag.ProT = _projectService.GetProtype();
 		var pro = _projectService.GetPro(Id);
 		return View("UpdatePro", pro);
@@ -82,9 +119,28 @@ public class ProjectController : Controller
 	[HttpPost]
 	public IActionResult Update(Project pro)
 	{
+		if (!ModelState.IsValid)
+		{
+			// Kiểm tra từng trường input và chỉ cảnh báo khi trường đó null
+			if (string.IsNullOrEmpty(pro.Name))
+				ModelState.AddModelError("Name", "Please enter a name.");
+
+			if (pro.StartDate == null)
+				ModelState.AddModelError("StartDate", "Please enter a start date.");
+
+			if (string.IsNullOrEmpty(pro.Description))
+				ModelState.AddModelError("Description", "Please enter a description.");
+
+			// Thực hiện kiểm tra các trường khác nếu cần
+			TempData["Mess"] = "Please do not leave blank boxes";
+			return RedirectToAction("UpdatePro");
+		}
+		else
+		{
+
 			pro.StartDate = DateOnly.FromDateTime(DateTime.Now);
 			_projectService.UpdatePro(pro);
 			return RedirectToAction("Index");
-		
+		}
 	}
 }
