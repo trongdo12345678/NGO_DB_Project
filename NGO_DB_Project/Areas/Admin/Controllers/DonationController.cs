@@ -11,18 +11,29 @@ public class DonationController : Controller
 	{
 		_dontionService = dontionService;
 	}
-	public IActionResult Index()
+	[Route("/Admin/Donation/Index/{page}")]
+	[Route("/Admin/Donation/Index")]
+	public IActionResult Index(int page = 1)
 	{
+
+		var (totalPage, currentPage) = _dontionService.GetPaginationInfo(5, page);
+		ViewBag.Dona = _dontionService.GetlistPbyPages(page, 5);
+		ViewBag.TotalPage = totalPage;
+		ViewBag.CurrentPage = currentPage;
 		return View();
 	}
-    public IActionResult AddDona()
+	public IActionResult AddDona()
     {
-        return View();
+		ViewBag.Pro = _dontionService.GetPro();
+		ViewBag.Mem = _dontionService.GetMem();
+		return View();
     }
     [HttpPost]
 	public ActionResult AddDontadmin(Donation dona)
 	{
-		_dontionService.AddDonaAdmin(dona);
+		
+		dona.DonationDate = DateOnly.FromDateTime(DateTime.Now);
+		_dontionService.AddDona(dona);
 		return RedirectToAction("Index");
 	}
 }

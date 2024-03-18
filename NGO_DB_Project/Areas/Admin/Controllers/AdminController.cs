@@ -13,7 +13,7 @@ public class AdminController : Controller
 	{
 		_accountService = accountService;
 	}
-   
+	[Route("~/")]
     public IActionResult Index()
     {
 		if (HttpContext.Session.GetString("LoggedInUser") != null)
@@ -51,5 +51,9 @@ public class AdminController : Controller
 		}
 	}
 
+	public IActionResult Logout()
+	{
+		return RedirectToAction("LoginAdmin");
+	}
 
 }

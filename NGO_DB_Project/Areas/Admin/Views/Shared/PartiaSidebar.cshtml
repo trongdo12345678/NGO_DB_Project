@@ -6,7 +6,7 @@
             <img src="~/clients/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-            <a href="#" class="d-block">Charity management</a>
+            <a href="#" style="text-decoration: none;" class="d-block">Charity management</a>
         </div>
     </div>
 
@@ -17,15 +17,7 @@
             <!-- Add icons to the links using the .nav-icon class
             with font-awesome or any other icon font library -->
             <li class="nav-item">
-                <a  class="nav-link">
-                    <i class="nav-icon fas fa-tachometer-alt"></i>
-                    <p>
-                        Project Type
-                    </p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a asp-controller="Donation" asp-action="Index" class="nav-link">
                     <i class="nav-icon fas fa-th"></i>
                     <p>
                         Donations Admin
@@ -34,7 +26,7 @@
             </li>
             <li class="nav-item">
                 <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <i class="nav-icon fas fa-th"></i>
                     <p>
                         Manage Project 
                         <i class="right fas fa-angle-left"></i>
@@ -56,10 +48,10 @@
                 </ul>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
+                <a asp-action="Logout" asp-controller="Admin" class="nav-link"> 
+                    <i class="fa-solid fa-right-from-bracket"></i>
                     <p>
-                        System configuration
+                        Log Out
                     </p>
                 </a>
             </li>

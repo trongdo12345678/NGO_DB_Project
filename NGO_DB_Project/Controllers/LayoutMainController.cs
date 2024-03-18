@@ -7,4 +7,21 @@ public class LayoutMainController : Controller
     {
         return View();
     }
+    public IActionResult Donate()
+    {
+        return View();
+    }
+    public IActionResult Contact()
+    {
+        return View();
+    }
+    public IActionResult About()
+    {
+        return View();
+    }
+    public IActionResult News()
+    {
+        return View();
+    }
+
 }

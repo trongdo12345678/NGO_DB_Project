@@ -26,6 +26,7 @@ builder.Services.AddDbContext<GiveAidContext>(options =>
 builder.Services.AddScoped<ProjectypeService, ProjectTypeServiceImpl>();
 builder.Services.AddScoped<ProjectService, ProjectServicempl>();
 builder.Services.AddScoped<IAccountService, ServiceBuid>();
+builder.Services.AddScoped<DonationService, DonationServicempl>();
 
 var app = builder.Build();
 
