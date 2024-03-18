@@ -1,0 +1,25 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model NGO_DB_Project.Models.Donation
+@{
+    Layout = "_LayoutAdmin";
+}
+
+<form asp-area="Admin" asp-controller="Donation" asp-action="AddDontadmin" method="post">
+	<div class="card-body">
+		<div class="bs-stepper-content">
+			<div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
+				<div class="form-group">
+					<label for="TypeName">TypeName</label>
+					<input asp-for="Description" type="text" class="mdc-text-field__input form-control" />
+					<span class="text-danger">@ViewBag.Mess</span>
+				</div>
+				<div class="form-group">
+					<a href="index" class="btn btn-danger">Exit</a>
+					<button type="submit" class="btn btn-primary">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>

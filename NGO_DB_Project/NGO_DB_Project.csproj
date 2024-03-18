@@ -43,5 +43,20 @@
 	<ItemGroup>
     <AdditionalDesignTimeBuildInput Remove="FakesAssemblies\**" />
   </ItemGroup>
+	
+	<ItemGroup>
+	  <None Include="wwwroot\content\css\style.css.map" />
+	  <None Include="wwwroot\content\css\style.scss" />
+	  <None Include="wwwroot\content\fonts\fontawesome-webfont.woff2" />
+	  <None Include="wwwroot\content\js\bootstrap.js" />
+	  <None Include="wwwroot\content\js\custom.js" />
+	  <None Include="wwwroot\content\js\jquery-3.4.1.min.js" />
+	  <None Include="wwwroot\LoginAdmin\js\bootstrap.min.js" />
+	  <None Include="wwwroot\LoginAdmin\js\Chart.min.js" />
+	  <None Include="wwwroot\LoginAdmin\js\jquery-3.3.1.min.js" />
+	  <None Include="wwwroot\LoginAdmin\js\moment.min.js" />
+	  <None Include="wwwroot\LoginAdmin\js\tooplate-scripts.js" />
+	  <None Include="wwwroot\WebUser\script.js" />
+	</ItemGroup>
 
 </Project>

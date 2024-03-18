@@ -2,11 +2,21 @@ using Microsoft.EntityFrameworkCore;
 using NGO_DB_Project.Models;
 using NGO_DB_Project.Models.ClassImpl;
 using NGO_DB_Project.Service;
+using NGO_DB_Project.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddControllersWithViews();
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = ".YourAppName.Session";
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 builder.Services.AddDbContext<GiveAidContext>(options =>
 {
@@ -15,7 +25,7 @@ builder.Services.AddDbContext<GiveAidContext>(options =>
 //caaus hinh khi tao project moi
 builder.Services.AddScoped<ProjectypeService, ProjectTypeServiceImpl>();
 builder.Services.AddScoped<ProjectService, ProjectServicempl>();
-builder.Services.AddScoped<MemberService, MemberServicempl>();
+builder.Services.AddScoped<IAccountService, ServiceBuid>();
 
 var app = builder.Build();
 
@@ -29,7 +39,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseSession();
 app.UseRouting();
 
 app.UseAuthorization();
